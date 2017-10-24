@@ -73,7 +73,9 @@ chmod -v 600 /var/log/btmp
 logout
 export LFS=/mnt/lfs
 cd $LFS/sources
-./s6.71_chroot.sh ;从现在开始，要在退出后重新进入 chroot 环境就要执行s6.71r_chroot.sh
+./s6.71_chroot.sh ;从现在开始，要在退出后重新进入 chroot 环境就要执行:
+s6.4_chroot.sh
+s6.71r_chroot.sh
 修改s7.2_9.sh脚本，脚本需要在/etc目录下生产了一个fstab，其中<xxx>， <yyy> 和 <fff> 请修改脚本用适当的值替换。例如 sda2，sda5 和 ext4；另外假定根分区（或者是磁盘分区）是 sda2，脚本生成了/boot/grub/grub.cfg配置文件，如果启动文件不是sda2需要修改脚本。
 ./s7.2_9.sh ;基本系统配置
 pc版本的配置（包括启动配置）比树莓派复杂，这里请参考手册的介绍。另外这个版本的系统初始化是基于传统的Sysvinit，还有一个版本的LFS基于systemd的初始化管理，比Sysvinit更新，但也更复杂。建议先从Sysvinit这个版本开始。
@@ -84,6 +86,7 @@ cd $LFS/source
 ./s8.3.sh ;建议手工执行，也许编译中间出现问题呢？
 如果上面脚本胜利执行完成那就要请负责启动电脑的grub出场了。它是一个多重操作系统启动管理器，用来引导不同系统，如windows，linux。
 grub-install /dev/sda ;命令将会覆盖已有的引导器。如无需要，请勿运行！！！
+（此时也可以使用update-grub生成/boot/grub/grub.cfg配置文件，但发现找不到update-grub命令，update-grub是grub-mkconfig -o /boot/grub/grub.cfg的简化版，可以用grub-mkconfig代替）
 但我的建议是既然宿主机debian上已经安装了grub（如果不是用LiveCD这样的方式安装的话），干嘛不配置宿主机的grub来启动我们的LFS呢？当然你需要学习一下如何配置grub以新增加启动的系统。不过明显这样做比较安全，我觉得花这点时间还是值的，如何配置就当思考题读者自己完成吧。
 至此已经完成了全部的编译和配置，最后检查以下的配置文件是不是都是正确的吧。
 /etc/bashrc
